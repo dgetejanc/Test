@@ -1,0 +1,85 @@
+@extends('layouts.app')
+
+@section('content')
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+			<img src ="/uploads/pictures/{{ $user->picture }}" style="width:150px; height:150px;">
+			<form enctype="multipart/form-data" action="/profile" method="POST">
+				<label>Update Profile Image</label>
+				<input type="file" name="picture" />
+				<input type="hidden" name="_token" value = "{{ csrf_token() }}" />
+				<input type="submit" class="btn" />
+			</form>
+			</br></br>
+			<form action="/profile/update" method='POST' ajax="true" class="form">
+			  {{ method_field('PUT') }} <!-- hidden _method to use PUT in forms -->
+			  <label for="name">Name:</label>
+			  <input type="text" id="name" name="name" placeholder="{{ $user->name }}" required data-required-message="Name is required."><br>
+
+			  <label for="email">Email:</label>
+			  <input type="text" id="email" name="email" placeholder="{{ $user->email }}" required data-required-message="email is required."><br>
+
+			  <label for="Phone">Phone:</label>
+			 <input type="text" id="phone" name="phone" maxlength="14" placeholder="{{ $user->phone }}" required data-required-message="Phone is required."><br>
+
+			  <input type="hidden" id="token" name="_token" value = "{{ csrf_token() }}" />
+			  <input type="submit" class="btn" value="Submit" />
+			</form>
+        </div>
+    </div>
+</div>
+
+<!-- Normally wouldn't put the Javascript in the same file like this, but it's easier for you to see my code in one file. -->
+<script>
+</script>
+<script type="text/javascript">
+$('#phone')
+	.keydown(function (e) {
+		var key = e.charCode || e.keyCode || 0;
+		$phone = $(this);
+
+		// Auto-format- do not expose the mask as the user begins to type
+		if (key !== 8 && key !== 9) {
+			if ($phone.val().length === 4) {
+				$phone.val($phone.val() + ')');
+			}
+			if ($phone.val().length === 5) {
+				$phone.val($phone.val() + ' ');
+			}
+			if ($phone.val().length === 9) {
+				$phone.val($phone.val() + '-');
+			}
+		}
+
+		// Allow numeric (and tab, backspace, delete) keys only
+		return (key == 8 ||
+				key == 9 ||
+				key == 46 ||
+				(key >= 48 && key <= 57) ||
+				(key >= 96 && key <= 105));
+	})
+
+	.bind('focus click', function () {
+		$phone = $(this);
+
+		if ($phone.val().length === 0) {
+			$phone.val('(');
+		}
+		else {
+			var val = $phone.val();
+			$phone.val('').val(val); // Ensure cursor remains at the end
+		}
+	})
+
+	.blur(function () {
+		$phone = $(this);
+
+		if ($phone.val() === '(') {
+			$phone.val('');
+		}
+	});
+
+</script>
+
+@endsection
