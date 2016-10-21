@@ -53,6 +53,6 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
 
-		'admin' => \Illuminate\Routing\Middleware\Admin::class,  //Custom middleware on Route. Checks to see if the user is an admin. used on /users route. 
+        'admin' => \Illuminate\Routing\Middleware\Admin::class,  //Custom middleware on Route. Checks to see if the user is an admin. used on /users route.
     ];
 }
